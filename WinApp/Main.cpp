@@ -1,11 +1,32 @@
 #include <Windows.h>
 #include "CustomRectangle.h"
 
-#define MOVE_SPEED 3
+#define MOVE_SPEED 5
 
 CustomRectangle rect;
 
 
+
+void RectangleMoveOnKeyDown(HWND hwnd, int addleft, int addtop, int addright, int addbottom)
+{
+	InvalidateRect(hwnd, 0, true);
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint(hwnd, &ps);
+
+	rect.MoveRectangle(hwnd, hdc, addleft, addtop, addright, addbottom);
+
+	/*char *str = (char *)malloc(10*sizeof(char));
+	_itoa_s(rect.GetLeft(), str, 9, 10);
+
+	LPRECT recttext = (LPRECT)malloc(sizeof(RECT));
+	recttext->top = rect.GetTop();
+	recttext->right = rect.GetRight();
+	recttext->left = rect.GetLeft();
+	recttext->bottom = rect.GetBottom();
+
+	DrawTextA(hdc, str, -1, recttext,DT_CENTER);*/
+	EndPaint(hwnd, &ps);
+}
 int OnPaint(HWND hwnd)
 {
 	InvalidateRect(hwnd, 0, true);
@@ -13,18 +34,11 @@ int OnPaint(HWND hwnd)
 	HDC hdc = BeginPaint(hwnd, &ps);
 
 	rect.DrawRectangle(hdc);
-
+	//RectangleMoveOnKeyDown(hwnd, 0, 0, 0, 0);
+	
 	EndPaint(hwnd, &ps);
 
 	return 0;
-}
-void RectangleMoveOnKeyDown(HWND hwnd, int addleft, int addtop, int addright, int addbottom)
-{
-	InvalidateRect(hwnd, 0, true);
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hwnd, &ps);
-	rect.DrawRectangle(hwnd, addleft, addtop, addright, addbottom);
-	EndPaint(hwnd, &ps);
 }
 int KeyDownHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
@@ -49,15 +63,53 @@ int KeyDownHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
+int ScrollHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
+{
+
+	/*BYTE lpKeyState[256];
+	memset(lpKeyState, 0, sizeof(256));
+	GetKeyboardState(lpKeyState);*/
+
+	int wheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);
+	int shift = GetKeyState(0x10);
+	if (shift < 0)
+	{
+		if (wheelDelta < 0)
+		{
+			RectangleMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED, 0);
+		}
+		else
+		{
+			RectangleMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED, 0);
+		}
+	}
+	else
+	{
+		if (wheelDelta > 0)
+		{
+			RectangleMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED);
+		}
+		else
+		{
+			RectangleMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED);
+		}
+	}
+	return 0;
+}
+
 LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 {
 	switch (uMsg)
 	{
+	case WM_CREATE:
 	case WM_PAINT:
 		OnPaint(hWnd);
 		break;
 	case WM_DESTROY:
 		PostQuitMessage(0);
+		break;
+	case WM_MOUSEWHEEL:
+		ScrollHandler(hWnd, wParam, lParam);
 		break;
 	case WM_KEYDOWN:
 		KeyDownHandler(hWnd, wParam, lParam);

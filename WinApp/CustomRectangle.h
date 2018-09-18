@@ -14,9 +14,14 @@ public:
 	HBRUSH GetBrush();
 	HPEN GetPen();
 
+	int GetLeft();
+	int GetTop();
+	int GetBottom();
+	int GetRight();
+
 	int DrawRectangle(HDC hdc);
 	int DrawRectangle(HDC hdc, int left, int top, int right, int bottom);
-	int DrawRectangle(HWND hwnd, int addleft, int addtop, int addright, int addbottom);
+	int MoveRectangle(HWND hwnd, HDC hdc, int addleft, int addtop, int addright, int addbottom);
 
 	~CustomRectangle();
 protected:

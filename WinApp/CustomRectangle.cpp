@@ -42,6 +42,26 @@ HPEN CustomRectangle::GetPen()
 	return pen;
 }
 
+int CustomRectangle::GetLeft()
+{
+	return left;
+}
+
+int CustomRectangle::GetTop()
+{
+	return top;
+}
+
+
+int CustomRectangle::GetBottom()
+{
+	return bottom;
+}
+
+int CustomRectangle::GetRight()
+{
+	return right;
+}
 
 int CustomRectangle::DrawRectangle(HDC hdc)
 {
@@ -59,7 +79,7 @@ int CustomRectangle::DrawRectangle(HDC hdc, int nleft, int ntop, int nright, int
 	return 0;
 }
 
-int CustomRectangle::DrawRectangle(HWND hwnd, int addleft, int addtop, int addright, int addbottom)
+int CustomRectangle::MoveRectangle(HWND hwnd, HDC hdc,int addleft, int addtop, int addright, int addbottom)
 {
 	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
 	GetClientRect(hwnd, lpRect);
@@ -74,7 +94,7 @@ int CustomRectangle::DrawRectangle(HWND hwnd, int addleft, int addtop, int addri
 		bottom += addbottom;
 	}
 
-	DrawRectangle(GetWindowDC(hwnd));
+	DrawRectangle(hdc);
 
 	return 0;
 }
