@@ -10,6 +10,7 @@ public:
 	void SetTopBottom(int ntop, int nbottom);
 	void SetBrush(HBRUSH nbrush);
 	void SetPen(HPEN npen);
+	void SetHide(int nhide);
 
 	HBRUSH GetBrush();
 	HPEN GetPen();
@@ -18,6 +19,7 @@ public:
 	int GetTop();
 	int GetBottom();
 	int GetRight();
+	int GetHide();
 
 	int DrawRectangle(HDC hdc);
 	int DrawRectangle(HDC hdc, int left, int top, int right, int bottom);
@@ -31,5 +33,6 @@ protected:
 	int bottom;
 	HBRUSH brush;
 	HPEN pen;
+	int hide;
 };
 
