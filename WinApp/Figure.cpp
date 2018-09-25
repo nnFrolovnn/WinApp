@@ -5,10 +5,6 @@ Figure::~Figure()
 {
 }
 
-void Figure::Draw(HDC hdc, int nx, int ny, int nwidth, int nheight)
-{
-}
-
 void Figure::Draw(HDC hdc)
 {
 }
@@ -17,7 +13,7 @@ void Figure::Move(HWND hwnd, HDC hdc, int addx, int addy)
 {
 }
 
-void Figure::Rotate(HDC hdc, int angle)
+void Figure::Rotate(HDC hdc, double nangle)
 {
 }
 
@@ -33,6 +29,14 @@ void Figure::SetHide(int nhide)
 {
 }
 
+void Figure::SetTop(int ntop)
+{
+}
+
+void Figure::SetLeft(int nxleft)
+{
+}
+
 int Figure::GetHide()
 {
 	return 0;
@@ -44,6 +48,16 @@ int Figure::GetWidth()
 }
 
 int Figure::GetHeight()
+{
+	return 0;
+}
+
+int Figure::GetTop()
+{
+	return 0;
+}
+
+int Figure::GetLeft()
 {
 	return 0;
 }

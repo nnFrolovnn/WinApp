@@ -126,6 +126,7 @@
     <ClInclude Include="BitMapImage.h" />
     <ClInclude Include="CustomRectangle.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="WinAppLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

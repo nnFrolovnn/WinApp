@@ -1,8 +1,2 @@
-﻿  BitMapImage.cpp
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(97): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(98): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(100): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(101): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(103): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(104): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+﻿  Main.cpp
   WinApp.vcxproj -> D:\учеба\5 семестр\ОСиСП\WinApp\Debug\WinApp.exe

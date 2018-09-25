@@ -1,8 +1,8 @@
 #include "CustomRectangle.h"
 #include <math.h>
-#define PI 3.14159265 
+#include "WinAppLib.h"
 
-CustomRectangle::CustomRectangle()
+CustomRectangle::CustomRectangle():CustomRectangle(HIDE)
 {
 }
 
@@ -16,8 +16,8 @@ CustomRectangle::CustomRectangle(int nhide)
 	hide = nhide;
 	angle = 0;
 	hdcMem = CreateCompatibleDC(NULL);
-	brush = CreateSolidBrush(0x0000FF00);
-	pen = CreatePen(PS_SOLID, 1, 0x000000FF);
+	brush = CreateSolidBrush(WA_COLOR_BRUSH);
+	pen = CreatePen(PS_SOLID, 1, WA_COLOR_PEN);
 }
 
 CustomRectangle::CustomRectangle(int x, int y, int width, int height)
@@ -27,15 +27,25 @@ CustomRectangle::CustomRectangle(int x, int y, int width, int height)
 	right = x + width;
 	bottom = y + height;
 
-	hide = 0;
+	hide = HIDE;
 	angle = 0;
 	hdcMem = CreateCompatibleDC(NULL);
-	brush = CreateSolidBrush(0x0000FF00);
-	pen = CreatePen(PS_SOLID, 1, 0x000000FF);
+	brush = CreateSolidBrush(WA_COLOR_BRUSH);
+	pen = CreatePen(PS_SOLID, 1, WA_COLOR_PEN);
+}
 
-	SelectObject(hdcMem, brush);
-	SelectObject(hdcMem, pen);
-	Rectangle(hdcMem, 0, 0, 50, 50);
+CustomRectangle::CustomRectangle(int x, int y, int width, int height, HBRUSH nbrush, HPEN npen)
+{
+	left = x;
+	top = y;
+	right = x + width;
+	bottom = y + height;
+
+	hide = HIDE;
+	angle = 0;
+	hdcMem = CreateCompatibleDC(NULL);
+	brush = nbrush;
+	pen = npen;
 }
 
 void CustomRectangle::SetLeft(int nleft)
@@ -58,29 +68,9 @@ void CustomRectangle::SetWidth(int nwidth)
 	right = left + nwidth;
 }
 
-void CustomRectangle::SetBrush(HBRUSH nbrush)
-{
-	brush = nbrush;
-}
-
-void CustomRectangle::SetPen(HPEN npen)
-{
-	pen = npen;
-}
-
 void CustomRectangle::SetHide(int nhide)
 {
 	hide = nhide;
-}
-
-HBRUSH CustomRectangle::GetBrush()
-{
-	return brush;
-}
-
-HPEN CustomRectangle::GetPen()
-{
-	return pen;
 }
 
 int CustomRectangle::GetLeft()
@@ -88,60 +78,29 @@ int CustomRectangle::GetLeft()
 	return left;
 }
 
-int CustomRectangle::GetTop()
+void CustomRectangle::Draw(HDC hdc)
 {
-	return top;
+	SelectObject(hdc, brush);
+	SelectObject(hdc, pen);
+	Rotate(hdc, 0);
 }
 
-
-int CustomRectangle::GetBottom()
+void CustomRectangle::Move(HWND hwnd, HDC hdc, int addx, int addy)
 {
-	return bottom;
-}
-
-int CustomRectangle::GetRight()
-{
-	return right;
-}
-
-int CustomRectangle::GetHide()
-{
-	return hide;
-}
-
-int CustomRectangle::DrawRectangle(HDC hdc)
-{
-	if (hide == 0)
-	{
-		SelectObject(hdc, brush);
-		SelectObject(hdc, pen);
-		Rotate(hdc, 0);
-	}
-	return 0;
-}
-
-int CustomRectangle::MoveRectangle(HWND hwnd, HDC hdc, int addleft, int addtop, int addright, int addbottom)
-{
-	if (hide != 0)
-	{
-		exit(0);
-	}
 	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
 	GetClientRect(hwnd, lpRect);
-	if (left + addleft >= 0 && right + addright <= lpRect->right)
+	if (left + addx >= 0 && right + addx <= lpRect->right)
 	{
-		left += addleft;
-		right += addright;
+		left += addx;
+		right += addx;
 	}
-	if (top + addtop >= 0 && bottom + addbottom <= lpRect->bottom)
+	if (top + addy >= 0 && bottom + addy <= lpRect->bottom)
 	{
-		top += addtop;
-		bottom += addbottom;
+		top += addy;
+		bottom += addy;
 	}
 
-	DrawRectangle(hdc);
-
-	return 0;
+	CustomRectangle::Draw(hdc);
 }
 
 void CustomRectangle::Rotate(HDC hdc, double nangle)
@@ -166,8 +125,26 @@ void CustomRectangle::Rotate(HDC hdc, double nangle)
 	Rectangle(hdc, left, top, right, bottom);
 }
 
+int CustomRectangle::GetHeight()
+{
+	return (bottom - top);
+}
+
+int CustomRectangle::GetTop()
+{
+	return top;
+}
+
+int CustomRectangle::GetHide()
+{
+	return hide;
+}
+
+int CustomRectangle::GetWidth()
+{
+	return (right - left);
+}
+
 CustomRectangle::~CustomRectangle()
 {
-	pen = NULL;
-	brush = NULL;
 }

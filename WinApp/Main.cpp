@@ -1,48 +1,21 @@
 #include <Windows.h>
 #include "CustomRectangle.h"
 #include "BitMapImage.h"
+#include "Figure.h"
+#include "WinAppLib.h"
 
-#define MOVE_SPEED 6
-#define HIDE 1
-#define SHOW 0
-#define ANGLE 3.14/18
-CustomRectangle rect;
 HMENU menu;
-BitMapImage image;
+Figure * figure;
 
-void RectangleMoveOnKeyDown(HWND hwnd, int addleft, int addtop, int addright, int addbottom)
+void FigureMoveOnKeyDown(HWND hwnd, int addx, int addy)
 {
 	InvalidateRect(hwnd, 0, true);
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
-	if (rect.GetHide() == 0)
+	if (figure->GetHide() == SHOW)
 	{
-		rect.MoveRectangle(hwnd, hdc, addleft, addtop, addright, addbottom);
-	}
-
-	/*char *str = (char *)malloc(10*sizeof(char));
-	_itoa_s(rect.GetLeft(), str, 9, 10);
-
-	LPRECT recttext = (LPRECT)malloc(sizeof(RECT));
-	recttext->top = rect.GetTop();
-	recttext->right = rect.GetRight();
-	recttext->left = rect.GetLeft();
-	recttext->bottom = rect.GetBottom();
-
-	DrawTextA(hdc, str, -1, recttext,DT_CENTER);*/
-	EndPaint(hwnd, &ps);
-}
-
-void PictureMoveOnKeyDown(HWND hwnd, int addx, int addy)
-{
-	InvalidateRect(hwnd, 0, true);
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hwnd, &ps);
-
-	if (image.GetHide() == SHOW)
-	{
-		image.MoveImage(hwnd, hdc, addx, addy);
+		figure->Move(hwnd, hdc, addx, addy);
 	}
 
 	EndPaint(hwnd, &ps);
@@ -54,13 +27,9 @@ int OnPaint(HWND hwnd)
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
-	if (image.GetHide() == SHOW)
+	if (figure->GetHide() == SHOW)
 	{
-		image.DrawImage(hdc);
-	}
-	if (rect.GetHide() == SHOW)
-	{
-		rect.DrawRectangle(hdc);
+		figure->Draw(hdc);
 	}
 	
 	EndPaint(hwnd, &ps);
@@ -74,38 +43,31 @@ int OnRotate(HWND hwnd, double angle)
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
-	if (image.GetHide() == SHOW)
+	if (figure->GetHide() == SHOW)
 	{
-		image.Rotate(hdc, angle);
-	}
-	if (rect.GetHide() == SHOW)
-	{
-		rect.Rotate(hdc, angle);
+		figure->Rotate(hdc, angle);
 	}
 
 	EndPaint(hwnd, &ps);
 
 	return 0;
 }
+
 int KeyDownHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (wParam)
 	{
 	case 0x41: //A
-		RectangleMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED, 0);
-		PictureMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0);
+		FigureMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0);
 		break;
 	case 0x44: //D
-		RectangleMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED, 0);
-		PictureMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0);
+		FigureMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0);
 		break;
 	case 0x53: //S
-		RectangleMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED);
-		PictureMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED);
+		FigureMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED);
 		break;
 	case 0x57: //W
-		RectangleMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED);
-		PictureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
+		FigureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
 		break;
 	case 0x51: //Q
 		OnRotate(hwnd, -ANGLE);
@@ -139,26 +101,22 @@ int ScrollHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	{
 		if (wheelDelta < 0) //down
 		{
-			RectangleMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED, 0);
-			PictureMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0);
+			FigureMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0);
 		}
 		else
 		{
-			RectangleMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED, 0);
-			PictureMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0);
+			FigureMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0);
 		}
 	}
 	else
 	{
 		if (wheelDelta > 0) //up
 		{
-			RectangleMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED);
-			PictureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
+			FigureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
 		}
 		else
 		{
-			RectangleMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED);
-			PictureMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED);
+			FigureMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED);
 		}
 	}
 	OnPaint(hwnd);
@@ -170,29 +128,29 @@ void LoadBitImage(HWND hwnd)
 	InvalidateRect(hwnd, 0, true);
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
-	
-	image = BitMapImage(hwnd, hdc, rect.GetLeft(), rect.GetTop());
-	image.SetHide(SHOW);
+	Figure * tempfigure = figure;
+
+	figure = new BitMapImage(hwnd, hdc, tempfigure->GetLeft(), tempfigure->GetTop());
+	figure->SetHide(SHOW);
 
 	EndPaint(hwnd, &ps);
 }
 
 void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
+	Figure * tempfigure = figure;
 	switch (wParam)
 	{
 	case 0: //load image
-		rect.SetHide(HIDE);
 		LoadBitImage(hwnd);
 		OnPaint(hwnd);
 		EnableMenuItem(menu, 1, MF_ENABLED);
 		break;
 	case 1: // unload image
-		rect = CustomRectangle(image.GetX(), image.GetY(), image.GetWidth(), image.GetHeight());
-		image = BitMapImage(HIDE);
-		rect.SetHide(SHOW);
-		OnPaint(hwnd);
+		figure = new CustomRectangle(tempfigure->GetLeft(), tempfigure->GetTop(), tempfigure->GetWidth(), tempfigure->GetHeight());
+		figure->SetHide(SHOW);
 		EnableMenuItem(menu, 1, MF_DISABLED);
+		OnPaint(hwnd);	
 		break;
 	default:
 		break;
@@ -251,15 +209,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	RegisterClassEx(&wcex);
 
 	menu = CreateMenu();
+	figure = new CustomRectangle(SHOW);
 
 	/*( Optional window styles, Window class, Window text, Window style, x, y, w, h, Parent window, Menu, handle, Additional data);*/
 	HWND hMainWindow = CreateWindowEx(0, "MainWindowClass", "WinApp", WS_OVERLAPPEDWINDOW, 0, 0,
 		CW_USEDEFAULT, CW_USEDEFAULT, NULL, NULL, hInstance, NULL);
-	ShowWindow(hMainWindow, SW_SHOWNORMAL);
-	
 
-	rect = CustomRectangle(SHOW);
-	image = BitMapImage(HIDE);
+	ShowWindow(hMainWindow, SW_SHOWNORMAL);	
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
