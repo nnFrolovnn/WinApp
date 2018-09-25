@@ -1,10 +1,8 @@
-﻿  CustomRectangle.cpp
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(121): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(122): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(125): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(126): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(127): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(128): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(130): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(131): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
+﻿  BitMapImage.cpp
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(97): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(98): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(100): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(101): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(103): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
+d:\учеба\5 семестр\осисп\winapp\winapp\bitmapimage.cpp(104): warning C4244: =: преобразование "double" в "LONG", возможна потеря данных
   WinApp.vcxproj -> D:\учеба\5 семестр\ОСиСП\WinApp\Debug\WinApp.exe

@@ -2,13 +2,17 @@
 #include <Windows.h>
 #include "Figure.h"
 
-class CustomRectangle: public Figure
+class CustomRectangle
 {
 public:
 	CustomRectangle();
+	CustomRectangle(int nhide);
+	CustomRectangle(int x, int y, int width, int height);
 
-	void SetLeftRight(int nleft, int nright);
-	void SetTopBottom(int ntop, int nbottom);
+	void SetLeft(int nleft);
+	void SetTop(int ntop);
+	void SetHeight(int nheight);
+	void SetWidth(int nwidth);
 	void SetBrush(HBRUSH nbrush);
 	void SetPen(HPEN npen);
 	void SetHide(int nhide);

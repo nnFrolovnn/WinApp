@@ -4,8 +4,29 @@
 
 CustomRectangle::CustomRectangle()
 {
-	SetLeftRight(100, 150);
-	SetTopBottom(100, 150);
+}
+
+CustomRectangle::CustomRectangle(int nhide)
+{
+	left = 100;
+	top = 100;
+	right = 150;
+	bottom = 150;
+
+	hide = nhide;
+	angle = 0;
+	hdcMem = CreateCompatibleDC(NULL);
+	brush = CreateSolidBrush(0x0000FF00);
+	pen = CreatePen(PS_SOLID, 1, 0x000000FF);
+}
+
+CustomRectangle::CustomRectangle(int x, int y, int width, int height)
+{
+	left = x;
+	top = y;
+	right = x + width;
+	bottom = y + height;
+
 	hide = 0;
 	angle = 0;
 	hdcMem = CreateCompatibleDC(NULL);
@@ -17,16 +38,24 @@ CustomRectangle::CustomRectangle()
 	Rectangle(hdcMem, 0, 0, 50, 50);
 }
 
-void CustomRectangle::SetLeftRight(int nleft, int nright)
+void CustomRectangle::SetLeft(int nleft)
 {
 	left = (nleft < 0) ? 0 : nleft;
-	right = (nright < 0) ? 0 : nright;
 }
 
-void CustomRectangle::SetTopBottom(int ntop, int nbottom)
+void CustomRectangle::SetTop(int ntop)
 {
 	top = (ntop < 0) ? 0 : ntop;
-	bottom = (nbottom < 0) ? 0 : nbottom;
+}
+
+void CustomRectangle::SetHeight(int nheight)
+{
+	bottom = left + nheight;
+}
+
+void CustomRectangle::SetWidth(int nwidth)
+{
+	right = left + nwidth;
 }
 
 void CustomRectangle::SetBrush(HBRUSH nbrush)

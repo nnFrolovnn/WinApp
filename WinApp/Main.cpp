@@ -62,7 +62,6 @@ int OnPaint(HWND hwnd)
 	{
 		rect.DrawRectangle(hdc);
 	}
-	//RectangleMoveOnKeyDown(hwnd, 0, 0, 0, 0);
 	
 	EndPaint(hwnd, &ps);
 
@@ -166,14 +165,13 @@ int ScrollHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-void LoadImageAndDraw(HWND hwnd)
+void LoadBitImage(HWND hwnd)
 {
 	InvalidateRect(hwnd, 0, true);
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 	
-	
-	image = BitMapImage(hwnd, hdc);
+	image = BitMapImage(hwnd, hdc, rect.GetLeft(), rect.GetTop());
 	image.SetHide(SHOW);
 
 	EndPaint(hwnd, &ps);
@@ -185,7 +183,16 @@ void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	{
 	case 0: //load image
 		rect.SetHide(HIDE);
-		LoadImageAndDraw(hwnd);
+		LoadBitImage(hwnd);
+		OnPaint(hwnd);
+		EnableMenuItem(menu, 1, MF_ENABLED);
+		break;
+	case 1: // unload image
+		rect = CustomRectangle(image.GetX(), image.GetY(), image.GetWidth(), image.GetHeight());
+		image = BitMapImage(HIDE);
+		rect.SetHide(SHOW);
+		OnPaint(hwnd);
+		EnableMenuItem(menu, 1, MF_DISABLED);
 		break;
 	default:
 		break;
@@ -196,6 +203,8 @@ void CreateWindowMenu(HWND hwnd)
 {
 	menu = CreateMenu();
 	AppendMenuA(menu, MF_STRING, 0, "Load image");
+	AppendMenuA(menu, MF_STRING, 1, "Unload image");
+	EnableMenuItem(menu, 1, MF_DISABLED);
 	DrawMenuBar(hwnd);
 }
 
@@ -229,15 +238,6 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
-void PrepareRectangle()
-{
-	/*
-	HBRUSH brush = CreateSolidBrush(0x0000FF00);
-	HPEN pen = CreatePen(PS_SOLID, 1, 0x000000FF);
-	*/
-	rect = CustomRectangle();
-}
-
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	WNDCLASSEX wcex;
@@ -258,8 +258,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	ShowWindow(hMainWindow, SW_SHOWNORMAL);
 	
 
-	PrepareRectangle();
-	image = BitMapImage();
+	rect = CustomRectangle(SHOW);
+	image = BitMapImage(HIDE);
 
 	MSG msg;
 	while (GetMessage(&msg, NULL, 0, 0))
