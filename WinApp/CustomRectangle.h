@@ -1,7 +1,8 @@
 #pragma once
 #include <Windows.h>
+#include "Figure.h"
 
-class CustomRectangle
+class CustomRectangle: public Figure
 {
 public:
 	CustomRectangle();
@@ -22,8 +23,9 @@ public:
 	int GetHide();
 
 	int DrawRectangle(HDC hdc);
-	int DrawRectangle(HDC hdc, int left, int top, int right, int bottom);
 	int MoveRectangle(HWND hwnd, HDC hdc, int addleft, int addtop, int addright, int addbottom);
+	void Rotate(HDC hdc, double nangle);
+
 
 	~CustomRectangle();
 protected:
@@ -33,6 +35,8 @@ protected:
 	int bottom;
 	HBRUSH brush;
 	HPEN pen;
+	HDC hdcMem;
 	int hide;
+	double angle;
 };
 

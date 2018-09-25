@@ -119,11 +119,13 @@
   <ItemGroup>
     <ClCompile Include="BitMapImage.cpp" />
     <ClCompile Include="CustomRectangle.cpp" />
+    <ClCompile Include="Figure.cpp" />
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BitMapImage.h" />
     <ClInclude Include="CustomRectangle.h" />
+    <ClInclude Include="Figure.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

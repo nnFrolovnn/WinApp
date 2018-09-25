@@ -2,10 +2,10 @@
 #include "CustomRectangle.h"
 #include "BitMapImage.h"
 
-#define MOVE_SPEED 4
+#define MOVE_SPEED 6
 #define HIDE 1
 #define SHOW 0
-
+#define ANGLE 3.14/18
 CustomRectangle rect;
 HMENU menu;
 BitMapImage image;
@@ -40,7 +40,7 @@ void PictureMoveOnKeyDown(HWND hwnd, int addx, int addy)
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
-	if (image.GetHide() == 0)
+	if (image.GetHide() == SHOW)
 	{
 		image.MoveImage(hwnd, hdc, addx, addy);
 	}
@@ -54,11 +54,11 @@ int OnPaint(HWND hwnd)
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
-	if (image.GetHide() == 0)
+	if (image.GetHide() == SHOW)
 	{
 		image.DrawImage(hdc);
 	}
-	if (rect.GetHide() == 0)
+	if (rect.GetHide() == SHOW)
 	{
 		rect.DrawRectangle(hdc);
 	}
@@ -69,6 +69,25 @@ int OnPaint(HWND hwnd)
 	return 0;
 }
 
+int OnRotate(HWND hwnd, double angle)
+{
+	InvalidateRect(hwnd, 0, true);
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint(hwnd, &ps);
+
+	if (image.GetHide() == SHOW)
+	{
+		image.Rotate(hdc, angle);
+	}
+	if (rect.GetHide() == SHOW)
+	{
+		rect.Rotate(hdc, angle);
+	}
+
+	EndPaint(hwnd, &ps);
+
+	return 0;
+}
 int KeyDownHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 {
 	switch (wParam)
@@ -88,6 +107,12 @@ int KeyDownHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	case 0x57: //W
 		RectangleMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED);
 		PictureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
+		break;
+	case 0x51: //Q
+		OnRotate(hwnd, -ANGLE);
+		break;
+	case 0x45: //E
+		OnRotate(hwnd, ANGLE);
 		break;
 	case VK_ESCAPE:
 		if (MessageBoxA(NULL, TEXT("Exit?"), TEXT("Dialog"), MB_YESNO) == IDYES)
@@ -111,29 +136,47 @@ int ScrollHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 
 	int wheelDelta = GET_WHEEL_DELTA_WPARAM(wParam);
 	int shift = GetKeyState(0x10);
-	if (shift < 0)
+	if (shift < 0) // shift is pressed
 	{
-		if (wheelDelta < 0)
+		if (wheelDelta < 0) //down
 		{
 			RectangleMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED, 0);
+			PictureMoveOnKeyDown(hwnd, -1 * MOVE_SPEED, 0);
 		}
 		else
 		{
 			RectangleMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED, 0);
+			PictureMoveOnKeyDown(hwnd, 1 * MOVE_SPEED, 0);
 		}
 	}
 	else
 	{
-		if (wheelDelta > 0)
+		if (wheelDelta > 0) //up
 		{
 			RectangleMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED, 0, -1 * MOVE_SPEED);
+			PictureMoveOnKeyDown(hwnd, 0, -1 * MOVE_SPEED);
 		}
 		else
 		{
 			RectangleMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED, 0, 1 * MOVE_SPEED);
+			PictureMoveOnKeyDown(hwnd, 0, 1 * MOVE_SPEED);
 		}
 	}
+	OnPaint(hwnd);
 	return 0;
+}
+
+void LoadImageAndDraw(HWND hwnd)
+{
+	InvalidateRect(hwnd, 0, true);
+	PAINTSTRUCT ps;
+	HDC hdc = BeginPaint(hwnd, &ps);
+	
+	
+	image = BitMapImage(hwnd, hdc);
+	image.SetHide(SHOW);
+
+	EndPaint(hwnd, &ps);
 }
 
 void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
@@ -141,9 +184,8 @@ void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	switch (wParam)
 	{
 	case 0: //load image
-		image = BitMapImage(hwnd, GetWindowDC(hwnd));
 		rect.SetHide(HIDE);
-		image.SetHide(SHOW);
+		LoadImageAndDraw(hwnd);
 		break;
 	default:
 		break;
@@ -204,7 +246,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wcex.lpfnWndProc = MainWindowProc;
 	wcex.hInstance = hInstance;
 	wcex.hCursor = LoadCursor(0, IDC_ARROW); //IDC_HAND
-	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW);
+	wcex.hbrBackground = (HBRUSH)(COLOR_WINDOW + 2);
 	wcex.lpszClassName = "MainWindowClass";
 	RegisterClassEx(&wcex);
 
