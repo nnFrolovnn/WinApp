@@ -121,11 +121,13 @@
     <ClCompile Include="CustomRectangle.cpp" />
     <ClCompile Include="Figure.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Shooter.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BitMapImage.h" />
     <ClInclude Include="CustomRectangle.h" />
     <ClInclude Include="Figure.h" />
+    <ClInclude Include="Shooter.h" />
     <ClInclude Include="WinAppLib.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -48,6 +48,12 @@ BitMapImage::BitMapImage()
 {
 }
 
+BitMapImage::BitMapImage(HWND hwnd, HDC hdc, char * file): BitMapImage(HIDE)
+{
+	LoadBitMapImage(hwnd, hdc, file);
+	MakeTransparent(hdc);
+}
+
 BitMapImage::~BitMapImage()
 {
 }
@@ -267,6 +273,20 @@ void BitMapImage::LoadBitMapImage(HWND hwnd, HDC hdc)
 		return;
 	}
 	hbitmap = (HBITMAP)LoadImageA(NULL, image.lpstrFile, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
+	GetObjectA(hbitmap, sizeof(BITMAP), &bm);
+
+	source = CreateCompatibleDC(NULL);
+	SelectObject(source, hbitmap);
+
+	width = bm.bmWidth;
+	height = bm.bmHeight;
+}
+
+void BitMapImage::LoadBitMapImage(HWND hwnd, HDC hdc, char * file)
+{
+	BITMAP bm;
+
+	hbitmap = (HBITMAP)LoadImageA(NULL, file, IMAGE_BITMAP, 0, 0, LR_LOADFROMFILE);
 	GetObjectA(hbitmap, sizeof(BITMAP), &bm);
 
 	source = CreateCompatibleDC(NULL);

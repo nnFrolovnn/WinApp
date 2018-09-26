@@ -8,6 +8,7 @@ public:
 	BitMapImage(HWND hwnd, HDC hdc, int nx, int ny);
 	BitMapImage(int nhide);
 	BitMapImage();
+	BitMapImage(HWND hwnd, HDC hdc, char * file);
 	~BitMapImage();
 
 	virtual void SetHide(int nhide) override;
@@ -39,5 +40,6 @@ private:
 
 	void MakeTransparent(HDC hdc);
 	void LoadBitMapImage(HWND hwnd, HDC hdc);
+	void LoadBitMapImage(HWND hwnd, HDC hdc, char * file);
 };
 

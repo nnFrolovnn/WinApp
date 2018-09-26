@@ -6,3 +6,4 @@
 #define ANGLE PI/18
 #define WA_COLOR_BRUSH 0x0000FF00
 #define WA_COLOR_PEN 0x000000FF
+#define BULLET_FILE_NAME "D:\\учеба\\5 семестр\\ОСиСП\\WinApp\\resource\\Bullet.bmp"
