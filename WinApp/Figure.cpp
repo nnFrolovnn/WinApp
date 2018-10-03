@@ -3,61 +3,55 @@
 
 Figure::~Figure()
 {
-}
 
-void Figure::Draw(HDC hdc)
-{
-}
-
-void Figure::Move(HWND hwnd, HDC hdc, int addx, int addy)
-{
-}
-
-void Figure::Rotate(HDC hdc, double nangle)
-{
 }
 
 void Figure::SetWidth(int nwidth)
 {
+	width = nwidth;
 }
 
 void Figure::SetHeight(int nheight)
 {
+	height = nheight;
 }
 
 void Figure::SetHide(int nhide)
 {
+	hide = nhide;
 }
 
 void Figure::SetTop(int ntop)
 {
+	y = ntop;
 }
 
-void Figure::SetLeft(int nxleft)
+void Figure::SetLeft(int nleft)
 {
+	x = nleft;
 }
 
 int Figure::GetHide()
 {
-	return 0;
+	return hide;
 }
 
 int Figure::GetWidth()
 {
-	return 0;
+	return width;
 }
 
 int Figure::GetHeight()
 {
-	return 0;
+	return height;
 }
 
 int Figure::GetTop()
 {
-	return 0;
+	return y;
 }
 
 int Figure::GetLeft()
 {
-	return 0;
+	return x;
 }

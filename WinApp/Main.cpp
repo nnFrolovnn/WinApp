@@ -7,6 +7,8 @@
 HMENU menu;
 Figure * figure;
 
+int showsmth;
+
 void FigureMoveOnKeyDown(HWND hwnd, int addx, int addy)
 {
 	InvalidateRect(hwnd, 0, true);
@@ -49,7 +51,6 @@ int OnRotate(HWND hwnd, double angle)
 	}
 
 	EndPaint(hwnd, &ps);
-
 	return 0;
 }
 
@@ -152,6 +153,15 @@ void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 		EnableMenuItem(menu, 1, MF_DISABLED);
 		OnPaint(hwnd);	
 		break;
+	case 2: // show smth
+		if (showsmth == 0)
+		{
+			showsmth = 1;
+		}
+		else
+		{
+			showsmth = 0;
+		}
 	default:
 		break;
 	}
@@ -162,6 +172,7 @@ void CreateWindowMenu(HWND hwnd)
 	menu = CreateMenu();
 	AppendMenuA(menu, MF_STRING, 0, "Load image");
 	AppendMenuA(menu, MF_STRING, 1, "Unload image");
+	AppendMenuA(menu, MF_STRING, 2, "Show smth");
 	EnableMenuItem(menu, 1, MF_DISABLED);
 	DrawMenuBar(hwnd);
 }
@@ -196,6 +207,13 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 	return DefWindowProc(hWnd, uMsg, wParam, lParam);
 }
 
+void Initialize()
+{
+	menu = CreateMenu();
+	figure = new CustomRectangle(SHOW);
+	showsmth = 0;
+}
+
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow)
 {
 	WNDCLASSEX wcex;
@@ -208,8 +226,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wcex.lpszClassName = "MainWindowClass";
 	RegisterClassEx(&wcex);
 
-	menu = CreateMenu();
-	figure = new CustomRectangle(SHOW);
+	Initialize();
 
 	/*( Optional window styles, Window class, Window text, Window style, x, y, w, h, Parent window, Menu, handle, Additional data);*/
 	HWND hMainWindow = CreateWindowEx(0, "MainWindowClass", "WinApp", WS_OVERLAPPEDWINDOW, 0, 0,

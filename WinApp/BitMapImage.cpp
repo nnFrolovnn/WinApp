@@ -54,27 +54,6 @@ BitMapImage::~BitMapImage()
 
 void BitMapImage::Rotate(HDC hdc, double nangle)
 {
-	/*POINT *lpPoint = (POINT *)calloc(3, sizeof(POINT));
-
-	angle += nangle;
-
-	double b = asin(width / sqrt(height*height + width * width));
-	double g = (PI - angle) / 2;
-
-	double d2 = g - b;
-	double d1 = g - PI / 2 + b;
-	double s = 2 * sin(angle / 2.0)*sqrt(height*height + width * width)/2.0;
-
-	lpPoint[0].x = x  +s * cos(d1);
-	lpPoint[0].y = y - s * sin(d1);
-
-	lpPoint[1].x = x  +width + s * sin(d1);
-	lpPoint[1].y = y + s * cos(d1);
-
-	lpPoint[2].x = x  -s * sin(d2);
-	lpPoint[2].y = y + height - s * cos(d2);
-
-	PlgBlt(hdc, lpPoint, hdcMem, 0, 0, width, height, NULL, 0, 0);*/
 	XFORM xForm;
 	float m = x + width / 2.0;
 	float n = y + height / 2.0;
@@ -95,67 +74,9 @@ void BitMapImage::Rotate(HDC hdc, double nangle)
 	BitBlt(hdc, x, y, width, height, hdcMem, 0, 0, SRCCOPY);
 }
 
-void BitMapImage::SetWidth(int nwidth)
-{
-	width = nwidth;
-}
-
-void BitMapImage::SetHeight(int nheight)
-{
-	height = nheight;
-}
-
-void BitMapImage::SetTop(int ntop)
-{
-	y = ntop;
-}
-
-void BitMapImage::SetLeft(int nleft)
-{
-	x = nleft;
-}
-
-void BitMapImage::SetHide(int nhide)
-{
-	hide = nhide;
-}
-
-int BitMapImage::GetHide()
-{
-	return hide;
-}
-
-int BitMapImage::GetWidth()
-{
-	return width;
-}
-
-int BitMapImage::GetHeight()
-{
-	return height;
-}
-
-int BitMapImage::GetTop()
-{
-	return y;
-}
-
-int BitMapImage::GetLeft()
-{
-	return x;
-}
-
 void BitMapImage::Draw(HDC hdc)
 {
-	if ((long)round(angle) == 0)
-	{
-		BitBlt(hdc, x, y, width, height, hdcMem, 0, 0, SRCCOPY);
-	}
-	else
-	{
-		//TODO
-		Rotate(hdc, 0);
-	}
+	Rotate(hdc, 0);
 }
 
 void BitMapImage::Move(HWND hwnd, HDC hdc, int addx, int addy)

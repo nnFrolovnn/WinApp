@@ -8,10 +8,10 @@ CustomRectangle::CustomRectangle():CustomRectangle(HIDE)
 
 CustomRectangle::CustomRectangle(int nhide)
 {
-	left = 100;
-	top = 100;
-	right = 150;
-	bottom = 150;
+	x = 100;
+	y = 100;
+	width = 50;
+	height = 50;
 
 	hide = nhide;
 	angle = 0;
@@ -20,62 +20,22 @@ CustomRectangle::CustomRectangle(int nhide)
 	pen = CreatePen(PS_SOLID, 1, WA_COLOR_PEN);
 }
 
-CustomRectangle::CustomRectangle(int x, int y, int width, int height)
+CustomRectangle::CustomRectangle(int x, int y, int width, int height):CustomRectangle(HIDE)
 {
-	left = x;
-	top = y;
-	right = x + width;
-	bottom = y + height;
-
-	hide = HIDE;
-	angle = 0;
-	hdcMem = CreateCompatibleDC(NULL);
-	brush = CreateSolidBrush(WA_COLOR_BRUSH);
-	pen = CreatePen(PS_SOLID, 1, WA_COLOR_PEN);
 }
 
 CustomRectangle::CustomRectangle(int x, int y, int width, int height, HBRUSH nbrush, HPEN npen)
 {
-	left = x;
-	top = y;
-	right = x + width;
-	bottom = y + height;
+	x = x;
+	y = y;
+	width = width;
+	height = height;
 
 	hide = HIDE;
 	angle = 0;
 	hdcMem = CreateCompatibleDC(NULL);
 	brush = nbrush;
 	pen = npen;
-}
-
-void CustomRectangle::SetLeft(int nleft)
-{
-	left = (nleft < 0) ? 0 : nleft;
-}
-
-void CustomRectangle::SetTop(int ntop)
-{
-	top = (ntop < 0) ? 0 : ntop;
-}
-
-void CustomRectangle::SetHeight(int nheight)
-{
-	bottom = left + nheight;
-}
-
-void CustomRectangle::SetWidth(int nwidth)
-{
-	right = left + nwidth;
-}
-
-void CustomRectangle::SetHide(int nhide)
-{
-	hide = nhide;
-}
-
-int CustomRectangle::GetLeft()
-{
-	return left;
 }
 
 void CustomRectangle::Draw(HDC hdc)
@@ -89,15 +49,13 @@ void CustomRectangle::Move(HWND hwnd, HDC hdc, int addx, int addy)
 {
 	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
 	GetClientRect(hwnd, lpRect);
-	if (left + addx >= 0 && right + addx <= lpRect->right)
+	if (x + addx >= 0 && x + width + addx <= lpRect->right)
 	{
-		left += addx;
-		right += addx;
+		x += addx;
 	}
-	if (top + addy >= 0 && bottom + addy <= lpRect->bottom)
+	if (y + addy >= 0 && y + height + addy <= lpRect->bottom)
 	{
-		top += addy;
-		bottom += addy;
+		y += addy;
 	}
 
 	CustomRectangle::Draw(hdc);
@@ -106,8 +64,8 @@ void CustomRectangle::Move(HWND hwnd, HDC hdc, int addx, int addy)
 void CustomRectangle::Rotate(HDC hdc, double nangle)
 {
 	XFORM xForm;
-	float m = (left + right) / 2.0;
-	float n = (top + bottom) / 2.0;
+	float m = x + width / 2.0;
+	float n = y + height / 2.0;
 
 	angle += nangle;
 	xForm.eM11 = cos(angle);
@@ -122,27 +80,7 @@ void CustomRectangle::Rotate(HDC hdc, double nangle)
 	SetGraphicsMode(hdc, GM_ADVANCED);
 	SetWorldTransform(hdc, &xForm);
 
-	Rectangle(hdc, left, top, right, bottom);
-}
-
-int CustomRectangle::GetHeight()
-{
-	return (bottom - top);
-}
-
-int CustomRectangle::GetTop()
-{
-	return top;
-}
-
-int CustomRectangle::GetHide()
-{
-	return hide;
-}
-
-int CustomRectangle::GetWidth()
-{
-	return (right - left);
+	Rectangle(hdc, x, y, x + width, y + height);
 }
 
 CustomRectangle::~CustomRectangle()
