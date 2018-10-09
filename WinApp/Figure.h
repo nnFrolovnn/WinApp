@@ -8,8 +8,8 @@ public:
 	virtual ~Figure();
 
 	virtual void Draw(HDC hdc) = 0;
-	virtual void Move(HWND hwnd, HDC hdc, int addx, int addy) = 0;
-	virtual void Rotate(HDC hdc, double nangle) = 0;
+	virtual void Move(HWND hwnd, int addx, int addy) = 0;
+	virtual void Rotate(double nangle);
 
 	virtual void SetHide(int nhide);
 	virtual void SetWidth(int nwidth);

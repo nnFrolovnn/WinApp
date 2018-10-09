@@ -11,8 +11,8 @@ public:
 	~BitMapImage();
 
 	virtual void Draw(HDC hdc) override;
-	virtual void Move(HWND hwnd, HDC hdc, int addx, int addy) override;
-	virtual void Rotate(HDC hdc, double nangle) override;
+	virtual void Move(HWND hwnd, int addx, int addy) override;
+	virtual void Rotate(double nangle) override;
 
 private:
 	HBITMAP hbitmap;

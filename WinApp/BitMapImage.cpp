@@ -52,13 +52,17 @@ BitMapImage::~BitMapImage()
 {
 }
 
-void BitMapImage::Rotate(HDC hdc, double nangle)
+void BitMapImage::Rotate(double nangle)
+{
+	angle += nangle;
+}
+
+void BitMapImage::Draw(HDC hdc)
 {
 	XFORM xForm;
 	float m = x + width / 2.0;
 	float n = y + height / 2.0;
 
-	angle += nangle;
 	xForm.eM11 = cos(angle);
 	xForm.eM12 = sin(angle);
 	xForm.eM21 = -sin(angle);
@@ -74,12 +78,7 @@ void BitMapImage::Rotate(HDC hdc, double nangle)
 	BitBlt(hdc, x, y, width, height, hdcMem, 0, 0, SRCCOPY);
 }
 
-void BitMapImage::Draw(HDC hdc)
-{
-	Rotate(hdc, 0);
-}
-
-void BitMapImage::Move(HWND hwnd, HDC hdc, int addx, int addy)
+void BitMapImage::Move(HWND hwnd, int addx, int addy)
 {
 	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
 	GetClientRect(hwnd, lpRect);
@@ -92,7 +91,6 @@ void BitMapImage::Move(HWND hwnd, HDC hdc, int addx, int addy)
 	{
 		y += addy;
 	}
-	Draw(hdc);
 }
 
 void BitMapImage::MakeTransparent(HDC hdc)

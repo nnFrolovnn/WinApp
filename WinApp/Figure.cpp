@@ -16,6 +16,11 @@ void Figure::SetHeight(int nheight)
 	height = nheight;
 }
 
+void Figure::Rotate(double nangle)
+{
+	angle += nangle;
+}
+
 void Figure::SetHide(int nhide)
 {
 	hide = nhide;

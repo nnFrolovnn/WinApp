@@ -6,26 +6,21 @@
 
 HMENU menu;
 Figure * figure;
-
+POINT prevPoint;
 int showsmth;
 
 void FigureMoveOnKeyDown(HWND hwnd, int addx, int addy)
 {
 	InvalidateRect(hwnd, 0, true);
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hwnd, &ps);
 
 	if (figure->GetHide() == SHOW)
 	{
-		figure->Move(hwnd, hdc, addx, addy);
+		figure->Move(hwnd, addx, addy);
 	}
-
-	EndPaint(hwnd, &ps);
 }
 
 int OnPaint(HWND hwnd)
 {
-	InvalidateRect(hwnd, 0, true);
 	PAINTSTRUCT ps;
 	HDC hdc = BeginPaint(hwnd, &ps);
 
@@ -42,15 +37,12 @@ int OnPaint(HWND hwnd)
 int OnRotate(HWND hwnd, double angle)
 {
 	InvalidateRect(hwnd, 0, true);
-	PAINTSTRUCT ps;
-	HDC hdc = BeginPaint(hwnd, &ps);
 
 	if (figure->GetHide() == SHOW)
 	{
-		figure->Rotate(hdc, angle);
+		figure->Rotate(angle);
 	}
 
-	EndPaint(hwnd, &ps);
 	return 0;
 }
 
@@ -167,6 +159,21 @@ void CommandHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
 	}
 }
 
+void MouseMoveHandler(HWND hwnd, WPARAM wParam, LPARAM lParam)
+{
+	int lbutt = GetKeyState(VK_LBUTTON);
+	long x = GET_X_LPARAM(lParam);
+	long y = GET_Y_LPARAM(lParam);
+
+	if (lbutt & 0x100)
+	{
+		FigureMoveOnKeyDown(hwnd, (x - prevPoint.x), (y - prevPoint.y));
+	}
+
+	prevPoint.x = x;
+	prevPoint.y = y;
+}
+
 void CreateWindowMenu(HWND hwnd)
 {
 	menu = CreateMenu();
@@ -181,6 +188,9 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 {
 	switch (uMsg)
 	{
+	case WM_MOUSEMOVE:
+		MouseMoveHandler(hWnd, wParam, lParam);
+		break;
 	case WM_CREATE:
 		CreateWindowMenu(hWnd);
 		SetMenu(hWnd, menu);
@@ -201,6 +211,10 @@ LRESULT CALLBACK MainWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lPar
 		break;
 	case WM_COMMAND:
 		CommandHandler(hWnd, wParam, lParam);
+		break;
+	case WM_LBUTTONDOWN:
+		prevPoint.x = LOWORD(lParam);
+		prevPoint.y = HIWORD(lParam);
 		break;
 	}
 

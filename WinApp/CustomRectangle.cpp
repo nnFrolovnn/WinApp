@@ -42,32 +42,11 @@ void CustomRectangle::Draw(HDC hdc)
 {
 	SelectObject(hdc, brush);
 	SelectObject(hdc, pen);
-	Rotate(hdc, 0);
-}
-
-void CustomRectangle::Move(HWND hwnd, HDC hdc, int addx, int addy)
-{
-	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
-	GetClientRect(hwnd, lpRect);
-	if (x + addx >= 0 && x + width + addx <= lpRect->right)
-	{
-		x += addx;
-	}
-	if (y + addy >= 0 && y + height + addy <= lpRect->bottom)
-	{
-		y += addy;
-	}
-
-	CustomRectangle::Draw(hdc);
-}
-
-void CustomRectangle::Rotate(HDC hdc, double nangle)
-{
+	
 	XFORM xForm;
 	float m = x + width / 2.0;
 	float n = y + height / 2.0;
 
-	angle += nangle;
 	xForm.eM11 = cos(angle);
 	xForm.eM12 = sin(angle);
 	xForm.eM21 = -sin(angle);
@@ -81,6 +60,25 @@ void CustomRectangle::Rotate(HDC hdc, double nangle)
 	SetWorldTransform(hdc, &xForm);
 
 	Rectangle(hdc, x, y, x + width, y + height);
+}
+
+void CustomRectangle::Move(HWND hwnd, int addx, int addy)
+{
+	LPRECT lpRect = (LPRECT)malloc(sizeof(RECT));;
+	GetClientRect(hwnd, lpRect);
+	if (x + addx >= 0 && x + width + addx <= lpRect->right)
+	{
+		x += addx;
+	}
+	if (y + addy >= 0 && y + height + addy <= lpRect->bottom)
+	{
+		y += addy;
+	}
+}
+
+void CustomRectangle::Rotate(double nangle)
+{
+	angle += nangle;
 }
 
 CustomRectangle::~CustomRectangle()

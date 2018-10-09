@@ -1,10 +1,2 @@
-﻿  CustomRectangle.cpp
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(67): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(68): warning C4244: инициализация: преобразование "double" в "float", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(71): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(72): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(73): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(74): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(76): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
-d:\учеба\5 семестр\осисп\winapp\winapp\customrectangle.cpp(77): warning C4244: =: преобразование "double" в "FLOAT", возможна потеря данных
+﻿  Main.cpp
   WinApp.vcxproj -> D:\учеба\5 семестр\ОСиСП\WinApp\Debug\WinApp.exe
